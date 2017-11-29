@@ -1,0 +1,31 @@
+{
+  "name": "msa_advancedtraning",
+  "version": "1.0.0",
+  "description": "For MSA advancedtraining",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha --reporter spec"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lulujing/MSA_advancedtraning.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lulujing/MSA_advancedtraning/issues"
+  },
+  "homepage": "https://github.com/lulujing/MSA_advancedtraning#readme",
+  "dependencies": {
+    "assert": "^1.4.1",
+    "botbuilder": "^3.12.0",
+    "chai": "^4.1.2",
+    "mocha": "^4.0.1",
+    "nock": "^9.1.3",
+    "nodeman": "^1.1.2",
+    "nodemon": "^1.12.1",
+    "request": "^2.83.0",
+    "restify": "^6.3.4",
+    "should": "^13.1.3"
+  }
+}
