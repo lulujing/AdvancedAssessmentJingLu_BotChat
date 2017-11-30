@@ -31,18 +31,18 @@ const Option6 = '6.Logout';
 const Option7 = '7.Connect to support';
 // start dialog will give a guide to user, when use open the botchat
 bot.dialog('start',function (session) {
-    if (!isAttachment(session)){
+  
     builder.Prompts.choice(session,
         'Hi,I am Bot of Contoso Bank,you can follow thoes options',
         [Option1,Option2,Option3,Option4,Option5,Option6,Option7],
         { listStyle: builder.ListStyle.button });
        session. clearDialogStack();
-    }
+    
 });
 
 //for option check the currency
 bot.dialog('CURRENCY' ,function (session, args) {
-    if (!isAttachment(session)) {             
+         
        var countryEntity = builder.EntityRecognizer.findEntity(args.intent.entities, 'country');
           if (countryEntity) {
                 switch(countryEntity.entity.toLowerCase()) {
@@ -57,7 +57,7 @@ bot.dialog('CURRENCY' ,function (session, args) {
                 session.send('Finding the currency from USA to other countries');
                 currencyInfomation.displayCurrencyCards('EUR,GBP,CAD,PLN,CNY,NZD',session);
               }
-         }      
+            
       }).triggerAction({
           matches: 'CURRENCY'
       });
@@ -65,9 +65,9 @@ bot.dialog('CURRENCY' ,function (session, args) {
    
 //add country or delete country
 bot.dialog('changedetail' ,function (session, args) {
-    if (!isAttachment(session)) {             
+                
            session.send('type "add countryName" or "delete countryName"');
-         }      
+            
       }).triggerAction({
           matches: 'change'
       });
@@ -77,24 +77,24 @@ bot.dialog('changedetail' ,function (session, args) {
    bot.dialog('UserDetail', [
     function (session, args, next) {
        
-     if (!isAttachment(session)) {   
+    
         session.dialogData.args = args || {};        
         if (!session.conversationData["username"]) {
             builder.Prompts.text(session, "Enter a username to setup your account.");                
         } else {
             next(); // Skip if we already have this info.
         }
-     }
+     
     },
     function (session, results, next) {
-        if (!isAttachment(session)) { 
+        
             if (results.response) {
                 session.conversationData["username"] = results.response;
             }
             session.send("Retrieving your Counties");  
            
           userInfo.userDetails(session, session.conversationData["username"]); 
-        }          
+              
     }
 ]).triggerAction({
     matches: 'UserDetail'
@@ -104,16 +104,16 @@ bot.dialog('changedetail' ,function (session, args) {
 //add more country
 bot.dialog('CreateNewUser', [
     function (session, args, next) {
-        if (!isAttachment(session)){
+       
         session.dialogData.args = args || {};        
         if (!session.conversationData["username"]) {
             builder.Prompts.text(session, "Enter a username to setup your account.");                
         } else {
             next(); 
-        }}
+        }
     },
     function (session, results, next) {
-        if (!isAttachment(session)) {
+       
             if (results.response) {
                 session.conversationData["username"] = results.response;
             }
@@ -129,7 +129,7 @@ bot.dialog('CreateNewUser', [
             } else {
                 session.send("No country identified!!!");
             }
-        }
+        
     }
 ]).triggerAction({
     matches: 'CreateNewUser'
@@ -139,17 +139,17 @@ bot.dialog('CreateNewUser', [
 //Delete country
 bot.dialog('DeleteCountry', [
     function (session, args, next) {
-     if (!isAttachment(session)){        
+       
         session.dialogData.args = args || {};
         if (!session.conversationData["username"]) {
             builder.Prompts.text(session, "Enter a username to setup your account.");
            } else {
             next(); // Skip if we already have this info.
             }
-     }
+     
     },
     function (session, results,next) {
-     if (!isAttachment(session)) {
+    
         if(results.response){
             session.conversationData['username']=results.response;
         }
@@ -166,7 +166,7 @@ bot.dialog('DeleteCountry', [
         } else {
             session.send("No country identified! Please try again");
         }
-     }
+     
        
     }
 ]).triggerAction({
@@ -189,16 +189,16 @@ bot.dialog('QnA', [
 //support
 bot.dialog('Support', [
     function (session, args, next) {
-        if (!isAttachment(session)){
+       
         session.dialogData.args = args || {};        
         if (!session.conversationData["username"]) {
             builder.Prompts.text(session, "Enter a username to setup your account.");                
         } else {
             next(); // Skip if we already have this info.
-        }}
+        }
     },
     function (session, results, next) { 
-        if (!isAttachment(session)){
+      
         if (results.response) {
             session.conversationData["username"] = results.response;
         }  
@@ -208,17 +208,17 @@ bot.dialog('Support', [
             builder.Prompts.text(session, "Enter a email for connection.");                
         } else {
             next(); // Skip if we already have this info.
-        }}
+        }
     },
     function (session, results, next) {
-        if (!isAttachment(session)) {
+       
 
             if (results.response) {
                 session.conversationData["Email"] = results.response;
             }
             session.send("Thanks"+' '+session.conversationData["username"] +','+ 'we will connect you soon');
             session. clearDialogStack();
-        }   
+        
     }
 ]).triggerAction({
     matches: 'support'
@@ -230,13 +230,10 @@ bot.dialog('login',[
         builder.Prompts.text(session, "send your image"); 
     },
     function (session, results) {
-                console.log(results.message.attachments>0);
+                
                 if(results.response.includes('http')){
                    
                     customVision.retreiveMessage(session,session.message.text);
-                }
-                else if(session.message.attachments && session.message.attachments.length > 0){
-                        
                 }
                 else{
                     session.send('wrong imageurl');
@@ -262,14 +259,3 @@ matches: 'Logout'
 
 }
 
-function isAttachment(session) { 
-    var msg = session.message.text;
-    if ((session.message.attachments && session.message.attachments.length > 0) || msg.includes("http")) {
-        session.send('i am here');
-        customVision.retreiveMessage(session);
-        return true;
-    }
-    else {
-        return false;
-    }
-}
